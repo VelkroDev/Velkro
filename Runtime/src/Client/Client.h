@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Application.h"
+#include "Logging/Log.h"
 
 using namespace Velkro;
 
@@ -10,7 +11,7 @@ public:
 	Client(Application* application);
 
 private:
-	static void Attach();	
-	static void Update();
-	static void Detach();
+	static void OnAttach();	
+	static void OnUpdate();
+	static void OnDetach();
 };

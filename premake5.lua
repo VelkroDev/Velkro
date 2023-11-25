@@ -10,6 +10,8 @@ workspace "Velkro"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+include "Core/vendor/glfw/"
+
 project "Core"
 	location "Core"
 	kind "SharedLib"
@@ -18,6 +20,9 @@ project "Core"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-obj/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "vlkpch.h"
+	pchsource "vlkpch.cpp"
+	
 	files
 	{
 		"%{prj.name}/src/**.h",
@@ -26,14 +31,20 @@ project "Core"
 
 	includedirs
 	{
-		"%{prj.name}/vendor/",
+		"vendor/spdlog/include",
+		"%{prj.name}/vendor/glfw/include/"		
+	}
+
+	links
+	{
+		"GLFW"
 	}
 
 	filter "system:windows"
 		cppdialect "C++20"
 		staticruntime "On"
 		systemversion "latest"
-
+   
 		defines
 		{
 			"VLK_PLATFORM_WINDOWS",
@@ -73,7 +84,9 @@ project "Runtime"
 
 	includedirs
 	{
-		"Core/src"
+		"Core/src",
+		"vendor/spdlog/include",
+		"Core/vendor/glfw/include/"
 	}
 
 	links
@@ -88,7 +101,7 @@ project "Runtime"
 
 		defines
 		{
-			"VLK_PLATFORM_WINDOWS"			
+			"VLK_PLATFORM_WINDOWS",	
 		}
 
 	filter "configurations:Debug"

@@ -1,0 +1,6 @@
+[submodule "Core/vendor/glfw"]
+	path = Core/vendor/glfw
+	url = https://github.com/velkroDev/glfw
+[submodule "vendor/spdlog"]
+	path = vendor/spdlog
+	url = https://github.com/gabime/spdlog

@@ -1,8 +1,6 @@
 #pragma once
 
-#ifdef VLK_PLATFORM_WINDOWS
-	
-#else
+#ifndef VLK_PLATFORM_WINDOWS
 	#error "Velkro only supports windows currently! Sorry."
 #endif
 

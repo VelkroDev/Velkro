@@ -1,11 +1,18 @@
+#include <vlkpch.h>
+
 #include "Time.h"
+
 #include <iostream>
 
 namespace Velkro
 {
 	float Time::GetTime()
 	{
-		// TODO: Get time
-		return 0.0f;
+		return static_cast<float>(glfwGetTime());
+	}
+
+	double Time::GetPreciseTime()
+	{
+		return glfwGetTime();
 	}
 }

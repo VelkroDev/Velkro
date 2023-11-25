@@ -1,12 +1,10 @@
 #pragma once
 
+#include "vlkpch.h"
+
 #include "API.h"
 
-#include <memory>
-#include <functional>
-#include <iostream>
-
-#include "Time/Time.h"
+#include "Window/Window.h"
 
 namespace Velkro
 {
@@ -32,5 +30,7 @@ namespace Velkro
 		VELKRO_API		static inline DetachCallback m_DetachCallback;
 
 		VELKRO_API		static inline bool m_Running = true;
+
+		Window m_Window;
 	};
 }

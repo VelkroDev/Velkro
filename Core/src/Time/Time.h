@@ -2,7 +2,7 @@
 
 #include "../API.h"
 
-#include <chrono>
+#include <GLFW/glfw3.h>
 
 namespace Velkro
 {
@@ -10,5 +10,6 @@ namespace Velkro
 	{
 	public:
 		VELKRO_API		static float GetTime();
+		VELKRO_API		static double GetPreciseTime();
 	};
 }

@@ -2,18 +2,18 @@
 
 Client::Client(Application* application)
 {
-	application->SetAttachCallback(Attach);
-	application->SetUpdateCallback(Update);
-	application->SetDetachCallback(Detach);
+	application->SetAttachCallback(OnAttach);
+	application->SetUpdateCallback(OnUpdate);
+	application->SetDetachCallback(OnDetach);
 }
 
-void Client::Attach()
+void Client::OnAttach()
+{
+	Logger::Init();
+}
+void Client::OnUpdate()
 {
 }
-void Client::Update()
+void Client::OnDetach()
 {
-}
-void Client::Detach()
-{
-
 }
