@@ -6,6 +6,11 @@
 
 #include "Window/Window.h"
 
+#include "FileManager/FileInput.h"
+#include "FileManager/FileOutput.h"
+
+#include "Renderer/Renderer.h"
+
 namespace Velkro
 {
 	class Application

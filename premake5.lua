@@ -32,7 +32,8 @@ project "Core"
 	includedirs
 	{
 		"vendor/spdlog/include",
-		"%{prj.name}/vendor/glfw/include/"		
+		"%{prj.name}/vendor/glfw/include/",
+		"%{prj.name}/vendor/glad/include/"
 	}
 
 	links
@@ -48,7 +49,8 @@ project "Core"
 		defines
 		{
 			"VLK_PLATFORM_WINDOWS",
-			"VLK_EXPORTS"
+			"VLK_EXPORTS",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands
@@ -86,7 +88,8 @@ project "Runtime"
 	{
 		"Core/src",
 		"vendor/spdlog/include",
-		"Core/vendor/glfw/include/"
+		"Core/vendor/glfw/include/",
+		"Core/vendor/glad/include/"
 	}
 
 	links
@@ -102,6 +105,7 @@ project "Runtime"
 		defines
 		{
 			"VLK_PLATFORM_WINDOWS",	
+			"GLFW_INCLUDE_NONE"
 		}
 
 	filter "configurations:Debug"

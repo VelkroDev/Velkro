@@ -1,52 +1,50 @@
 #pragma once
 
-#ifdef VLK_PLATFORM_WINDOWS
-#include <filesystem>
-#endif
-
-#include <cstdio>
+#include <fstream>
+#include <string>
 
 namespace Velkro
 {
     class FileInput
     {
     public:
-        FileInput(const char* filePath, std::FILE* inputData)
+        FileInput(const std::string& filePath)
             : m_FilePath(filePath)
         {
-            m_InputData = inputData;
+            m_InputStream.open(filePath);
         }
 
         ~FileInput()
         {
-            if (m_InputData)
-                std::fclose(m_InputData);
+            if (m_InputStream.is_open())
+                m_InputStream.close();
         }
 
-        static FileInput LoadFileInput(const char* filePath)
+        static FileInput CreateFileInput(const std::string& filePath)
         {
-            std::FILE* inputData = std::fopen(filePath, "rb");
-
-            return FileInput(filePath, inputData);
+            return FileInput(filePath);
         }
 
-        const char* GetInput()
+        std::string GetInput()
         {
-            std::fseek(m_InputData, 0, SEEK_END);
-            long fileSize = std::ftell(m_InputData);
-            std::rewind(m_InputData);
+            std::string input;
 
-            char* buffer = new char[fileSize];
-            std::fread(buffer, 1, fileSize, m_InputData);
+            if (m_InputStream.is_open())
+            {
+                m_InputStream.seekg(0, std::ios::end);
+                input.reserve(m_InputStream.tellg());
+                m_InputStream.seekg(0, std::ios::beg);
 
-            std::fclose(m_InputData);
+                input.assign((std::istreambuf_iterator<char>(m_InputStream)),
+                    std::istreambuf_iterator<char>());
+                m_InputStream.close();
+            }
 
-            return buffer;
+            return input;
         }
 
     private:
-        const char* m_FilePath = "";
-
-        std::FILE* m_InputData;
+        std::string m_FilePath;
+        std::ifstream m_InputStream;
     };
 }

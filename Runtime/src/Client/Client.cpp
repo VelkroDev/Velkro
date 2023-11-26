@@ -10,6 +10,10 @@ Client::Client(Application* application)
 void Client::OnAttach()
 {
 	Logger::Init();
+
+	Renderer renderer;
+
+	renderer.Init();
 }
 void Client::OnUpdate()
 {
