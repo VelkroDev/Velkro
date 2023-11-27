@@ -12,6 +12,11 @@ namespace Velkro
             : m_FilePath(filePath)
         {
             m_InputStream.open(filePath);
+
+            if (!m_InputStream.is_open())
+            {
+                VLK_CORE_ERROR("Unable to open file \"{0}\", file doesn't exist.", filePath);
+            }
         }
 
         ~FileInput()

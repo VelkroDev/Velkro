@@ -13,5 +13,6 @@ public:
 private:
 	static void OnAttach();	
 	static void OnUpdate();
+	static void OnEvent(Event event);
 	static void OnDetach();
 };

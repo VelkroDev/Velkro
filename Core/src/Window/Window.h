@@ -18,6 +18,8 @@ namespace Velkro
 
 		VELKRO_API		static Window NewWindow(const char* title, int width, int height);
 
+		VELKRO_API		void SetContextCurrent();
+
 		VELKRO_API		void Update();
 
 		VELKRO_API		int GetWidth();

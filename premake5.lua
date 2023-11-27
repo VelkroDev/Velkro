@@ -11,6 +11,7 @@ workspace "Velkro"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 include "Core/vendor/glfw/"
+include "Core/vendor/glad/"
 
 project "Core"
 	location "Core"
@@ -20,17 +21,18 @@ project "Core"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-obj/" .. outputdir .. "/%{prj.name}")
 
+	pchsource "%{prj.name}/src/vlkpch.cpp"
 	pchheader "vlkpch.h"
-	pchsource "vlkpch.cpp"
 	
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"		
+		"%{prj.name}/src/**.cpp"
 	}
 
 	includedirs
 	{
+		"vendor/glm/",
 		"vendor/spdlog/include",
 		"%{prj.name}/vendor/glfw/include/",
 		"%{prj.name}/vendor/glad/include/"
@@ -38,7 +40,8 @@ project "Core"
 
 	links
 	{
-		"GLFW"
+		"GLFW",
+		"GLAD"
 	}
 
 	filter "system:windows"
@@ -81,7 +84,7 @@ project "Runtime"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"		
+		"%{prj.name}/src/**.cpp"
 	}
 
 	includedirs

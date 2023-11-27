@@ -27,6 +27,11 @@ namespace Velkro
 		return window;
 	}
 
+	void Window::SetContextCurrent()
+	{
+		glfwMakeContextCurrent(m_Window);
+	}
+
 	void Window::Update()
 	{
 		glfwGetWindowSize(m_Window, &width, &height);
