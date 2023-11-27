@@ -39,13 +39,13 @@ namespace Velkro
 			0.5f, 0.5f, 0.0f,
 			0.5f, 0.0f, 0.0f,
 			0.0f, 0.5f, 0.0f,
-			0.0f, 0.0f, 0.0f
+			0.0f, 0.0f, 0.0f,
 		};
 
 		uint32_t indices[] =
 		{
 			0, 1, 2,
-			2, 3, 1
+			2, 3, 1,
 		};		
 
 		VAO = VAO::CreateVAO();

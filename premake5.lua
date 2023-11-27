@@ -58,7 +58,7 @@ project "Core"
 
 		postbuildcommands
 		{
-			("copy /B /Y ..\\bin\\" .. outputdir .. "\\%{prj.name}\\%{prj.name}.dll ..\\bin\\" .. outputdir .. "\\Runtime\\ > nul")
+			("{COPYFILE} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Runtime")
 		}
 
 	filter "configurations:Debug"
