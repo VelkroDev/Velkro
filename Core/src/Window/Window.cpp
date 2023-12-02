@@ -16,7 +16,7 @@ namespace Velkro
 	{
 	}
 
-	Window Window::NewWindow(const char* title, int width, int height)
+	Window Window::Create(const char* title, int width, int height)
 	{
 		Window window;
 
@@ -36,9 +36,11 @@ namespace Velkro
 	{
 		glfwGetWindowSize(m_Window, &width, &height);
 		glfwGetWindowPos(m_Window, &x, &y);
-		
+
+		glfwGetCursorPos(m_Window, &mouseX, &mouseY);
+
 		glfwSwapBuffers(m_Window);
-		
+
 		glfwPollEvents();
 	}
 
@@ -50,6 +52,10 @@ namespace Velkro
 	{
 		return height;
 	}
+	glm::vec2 Window::GetScale()
+	{
+		return glm::vec2(width, height);
+	}
 
 	int Window::GetX()
 	{
@@ -58,6 +64,40 @@ namespace Velkro
 	int Window::GetY()
 	{
 		return y;
+	}
+	glm::vec2 Window::GetPosition()
+	{
+		return glm::vec2(x, y);
+	}
+
+	float Window::GetMouseX()
+	{
+		return static_cast<float>(mouseX);
+	}
+	float Window::GetMouseY()
+	{
+		return static_cast<float>(mouseY);
+	}
+	glm::vec2 Window::GetMousePos()
+	{
+		return glm::vec2(static_cast<float>(mouseX), static_cast<float>(mouseY));
+	}
+
+	void Window::SetMousePos(glm::vec2 position)
+	{
+		glfwSetCursorPos(m_Window, position.x, position.y);
+	}
+
+	void Window::SetMouseVisibility(bool visible)
+	{
+		if (visible)
+		{
+			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		}
+		else
+		{
+			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		}		
 	}
 
 	bool Window::GetClosed()

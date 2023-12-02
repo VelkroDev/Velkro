@@ -1,6 +1,7 @@
 #include <vlkpch.h>
 
 #include "Application.h"
+#include "Renderer/CustomTypes/Texture/Texture.h"
 
 namespace Velkro
 {
@@ -8,7 +9,7 @@ namespace Velkro
 	{
 		Window::Init();
 
-		m_Window = Window::NewWindow("Velkro Engine", 800, 600);
+		m_Window = Window::Create("Velkro Engine", 800, 600);
 
 		Renderer::Init(m_Window);
 
@@ -19,58 +20,34 @@ namespace Velkro
 	{
 	}
 
-	void Application::OnEvent(Event event)
+	void Application::OnEvent(Event& event)
 	{
+		m_Camera.UpdateEvents(event, m_Window);
+
 		m_EventCallback(event);
 	}
 
 	void Application::Run()
 	{
 		m_AttachCallback();
+				
+		Shader = Shader::CreateShaderFromFile("assets/Shaders/shader.vertex.glsl", "assets/Shaders/shader.fragment.glsl");;
 		
-		Shader Shader = Shader::CreateShaderFromFile("assets/Shaders/shader.vertex.glsl", "assets/Shaders/shader.fragment.glsl");;
-
-		VAO VAO;
-		VBO VBO;
-		EBO EBO;
-
-		float vertices[] =
-		{
-			0.5f, 0.5f, 0.0f,
-			0.5f, 0.0f, 0.0f,
-			0.0f, 0.5f, 0.0f,
-			0.0f, 0.0f, 0.0f,
-		};
-
-		uint32_t indices[] =
-		{
-			0, 1, 2,
-			2, 3, 1,
-		};		
-
-		VAO = VAO::CreateVAO();
-
-		VAO.Bind();
-
-		VBO = VBO::CreateVBO(vertices, sizeof(vertices));
-
-		EBO = EBO::CreateEBO(indices, sizeof(indices));
-
-		VBO.UnBind();
-		VAO.UnBind();
-		EBO.UnBind();
+		Model model = Model::CreateModel("assets/Models/map/scene.gltf", VLK_LINEAR);
 
 		while (m_Running && !m_Window.GetClosed())
 		{
-			glViewport(0, 0, m_Window.GetWidth(), m_Window.GetHeight());
-
+			Renderer::SetViewport(glm::vec2(0.0f, 0.0f), m_Window.GetScale());
+			
 			Renderer::Update();
 
 			Event::Update(m_Window);
 
+			m_Camera.UpdateMatrices(Shader, m_Window);
+
 			Shader.Bind();
-			VAO.Bind();
-			glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
+
+			model.Render(Shader);
 
 			m_UpdateCallback();
 

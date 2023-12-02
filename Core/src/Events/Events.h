@@ -155,6 +155,8 @@ typedef int VLK_EVENT;
 
 #define VLK_KEY_LAST               VLK_KEY_MENU
 
+#define VLK_MOUSE_BUTTON_UNKNOWN  -1
+
 #define VLK_MOUSE_BUTTON_1         0
 #define VLK_MOUSE_BUTTON_2         1
 #define VLK_MOUSE_BUTTON_3         2
@@ -173,7 +175,7 @@ namespace Velkro
 	class Event
 	{
 	public:
-		using EventCallback = std::function<void(Event event)>;
+		using EventCallback = std::function<void(Event& event)>;
 
 		VELKRO_API		static void SetEventCallback(EventCallback eventCallback);
 

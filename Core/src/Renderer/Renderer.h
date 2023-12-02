@@ -2,17 +2,23 @@
 
 #include <glad/glad.h>
 
+#include <vector>
+#include <map>
+
 #include "../Window/Window.h"
+
 #include "../API.h"
 
-#include "Renderer3D.h"
+#include "GLTypes/VAO.h"
+#include "GLTypes/VBO.h"
+#include "GLTypes/EBO.h"
 
-namespace Velkro
+#include "CustomTypes/Model/Model.h"
+
+namespace Velkro::Renderer
 {
-	class Renderer
-	{
-	public:
-		VELKRO_API		static bool Init(Window& window);
-		VELKRO_API		static void Update();
-	};
+	VELKRO_API		bool Init(Window& window);
+	VELKRO_API		void Update();
+	
+	VELKRO_API		void SetViewport(glm::vec2 position, glm::vec2 scale);
 }

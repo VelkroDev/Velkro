@@ -36,11 +36,28 @@ namespace Velkro
 
 			glCompileShader(vertexShader);
 
+			int success;
+			glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+			if (!success)
+			{
+				char infoLog[512];
+				glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+				VLK_CORE_INFO("Vertex shader compilation failed: {}", infoLog);
+			}
+
 			GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
 			glShaderSource(fragmentShader, 1, &fragShaderSource, NULL);
 
 			glCompileShader(fragmentShader);
+
+			glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+			if (!success)
+			{
+				char infoLog[512];
+				glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+				VLK_CORE_INFO("Fragment shader compilation failed: {}", infoLog);
+			}
 
 			GLuint shaderProgram = glCreateProgram();
 
@@ -63,11 +80,28 @@ namespace Velkro
 
 			glCompileShader(vertexShader);
 
+			int success;
+			glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+			if (!success)
+			{
+				char infoLog[512];
+				glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+				VLK_CORE_INFO("Vertex shader compilation failed: {}", infoLog);
+			}
+
 			GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
 			glShaderSource(fragmentShader, 1, &fragShaderSource, NULL);
 
 			glCompileShader(fragmentShader);
+
+			glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+			if (!success)
+			{
+				char infoLog[512];
+				glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+				VLK_CORE_INFO("Fragment shader compilation failed: {}", infoLog);
+			}
 
 			GLuint shaderProgram = glCreateProgram();
 

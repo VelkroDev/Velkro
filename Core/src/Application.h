@@ -1,7 +1,5 @@
 #pragma once
 
-#include "vlkpch.h"
-
 #include "API.h"
 
 #include "Window/Window.h"
@@ -10,6 +8,8 @@
 #include "FileManager/FileOutput.h"
 
 #include "Renderer/Renderer.h"
+
+#include "Camera/Camera.h"
 
 #include "Events/Events.h"
 
@@ -25,7 +25,7 @@ namespace Velkro
 		VELKRO_API		Application();
 		VELKRO_API		~Application();
 		
-		VELKRO_API		static void OnEvent(Event event);
+		VELKRO_API		static void OnEvent(Event& event);
 
 		VELKRO_API		static void SetAttachCallback(AttachCallback attachCallback);
 		VELKRO_API		static void SetUpdateCallback(UpdateCallback updateCallback);
@@ -42,8 +42,12 @@ namespace Velkro
 		
 		VELKRO_API		static inline Event::EventCallback m_EventCallback;
 
+		VELKRO_API		static inline Camera m_Camera;
+
+		VELKRO_API		static inline Shader Shader;
+
 		VELKRO_API		static inline bool m_Running = true;
 
-		Window m_Window;
+		VELKRO_API		static inline Window m_Window;
 	};
 }

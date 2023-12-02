@@ -22,12 +22,26 @@ namespace Velkro
 
 	VLK_EVENT Event::GetKeyEvent(VLK_KEY_CODE key)
 	{
-		return m_KeyEvents[key];
+		if (m_KeyEvents.find(key) != m_KeyEvents.end())
+		{
+			return m_KeyEvents[key];
+		}
+		else
+		{
+			return VLK_UNKNOWN_ACTION;
+		}
 	}
 
 	VLK_EVENT Event::GetMouseButtonEvent(VLK_MOUSE_BUTTON_CODE mouseButton)
 	{
-		return m_MouseButtonEvents[mouseButton];
+		if (m_MouseButtonEvents.find(mouseButton) != m_MouseButtonEvents.end())
+		{
+			return m_MouseButtonEvents[mouseButton];
+		}
+		else
+		{
+			return VLK_UNKNOWN_ACTION;
+		}
 	}
 
 	void Event::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)

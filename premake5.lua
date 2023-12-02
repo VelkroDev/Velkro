@@ -21,7 +21,7 @@ project "Core"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-obj/" .. outputdir .. "/%{prj.name}")
 
-	pchsource "%{prj.name}/src/vlkpch.cpp"
+	pchsource "%{prj.name}/src/PCH/vlkpch.cpp"
 	pchheader "vlkpch.h"
 	
 	files
@@ -35,7 +35,10 @@ project "Core"
 		"vendor/glm/",
 		"vendor/spdlog/include",
 		"%{prj.name}/vendor/glfw/include/",
-		"%{prj.name}/vendor/glad/include/"
+		"%{prj.name}/vendor/glad/include/",
+		"%{prj.name}/vendor/stb/include/",
+		"%{prj.name}/vendor/json/include/",
+		"%{prj.name}/src/PCH/"
 	}
 
 	links
@@ -90,9 +93,13 @@ project "Runtime"
 	includedirs
 	{
 		"Core/src",
+		"Core/src/PCH",
+		"vendor/glm/",
 		"vendor/spdlog/include",
 		"Core/vendor/glfw/include/",
-		"Core/vendor/glad/include/"
+		"Core/vendor/glad/include/",
+		"Core/vendor/stb/include/",
+		"Core/vendor/json/include/"
 	}
 
 	links

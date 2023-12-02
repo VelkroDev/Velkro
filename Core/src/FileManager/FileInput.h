@@ -3,7 +3,9 @@
 #include <fstream>
 #include <string>
 
-namespace Velkro
+#include "../Logging/Log.h"
+
+namespace Velkro 
 {
     class FileInput
     {
@@ -11,7 +13,7 @@ namespace Velkro
         FileInput(const std::string& filePath)
             : m_FilePath(filePath)
         {
-            m_InputStream.open(filePath);
+            m_InputStream.open(filePath, std::ios::binary);
 
             if (!m_InputStream.is_open())
             {
@@ -33,6 +35,8 @@ namespace Velkro
         std::string GetInput()
         {
             std::string input;
+
+
 
             if (m_InputStream.is_open())
             {
