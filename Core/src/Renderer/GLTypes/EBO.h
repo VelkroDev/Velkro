@@ -78,6 +78,12 @@ namespace Velkro
         {
             return m_RendererID;
         }
+
+        void Destroy()
+        {
+            glDeleteBuffers(1, &m_RendererID);
+        }
+
     private:
         uint32_t m_RendererID;
     };

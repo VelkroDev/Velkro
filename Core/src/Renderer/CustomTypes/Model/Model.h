@@ -16,6 +16,10 @@ namespace Velkro
 	class Model
 	{
 	public:
+		Model()
+		{
+		}
+
 		Model(const char* filePath, TextureMipMap mipmapType, json json)
 		{
 			m_JSON = json;
@@ -25,6 +29,10 @@ namespace Velkro
 			m_Data = GetData();
 			
 			TraverseNode(0, mipmapType);
+		}
+
+		~Model()
+		{
 		}
 
 		static Model CreateModel(const char* filePath, TextureMipMap mipmapType)
@@ -66,10 +74,10 @@ namespace Velkro
 	private:
 		void LoadMesh(unsigned int indMesh, TextureMipMap mipmapType)
 		{
-			unsigned int posAccInd =	m_JSON["meshes"][indMesh]["primitives"][0]["attributes"]["POSITION"];
+			unsigned int posAccInd = m_JSON["meshes"][indMesh]["primitives"][0]["attributes"]["POSITION"];
 			unsigned int normalAccInd = m_JSON["meshes"][indMesh]["primitives"][0]["attributes"]["NORMAL"];
-			unsigned int texAccInd =	m_JSON["meshes"][indMesh]["primitives"][0]["attributes"]["TEXCOORD_0"];
-			unsigned int indAccInd =	m_JSON["meshes"][indMesh]["primitives"][0]["indices"];
+			unsigned int texAccInd = m_JSON["meshes"][indMesh]["primitives"][0]["attributes"]["TEXCOORD_0"];
+			unsigned int indAccInd = m_JSON["meshes"][indMesh]["primitives"][0]["indices"];
 
 			std::vector<float> posVec = GetFloats(m_JSON["accessors"][posAccInd]);
 			std::vector<glm::vec3> positions = GroupFloatsVec3(posVec);
@@ -77,10 +85,10 @@ namespace Velkro
 			std::vector<glm::vec3> normals = GroupFloatsVec3(normalVec);
 			std::vector<float> texVec = GetFloats(m_JSON["accessors"][texAccInd]);
 			std::vector<glm::vec2> texUVs = GroupFloatsVec2(texVec);
-
+									
 			std::vector<Vertex> vertices = AssembleVertices(positions, normals, texUVs);
 			std::vector<GLuint> indices = GetIndices(m_JSON["accessors"][indAccInd]);
-			std::vector<Texture> textures = GetTextures(mipmapType);
+			std::vector<Texture> textures = GetTextures(mipmapType);			
 
 			m_Meshes.push_back(Mesh::CreateMesh(vertices, indices, textures));
 		}
@@ -103,10 +111,10 @@ namespace Velkro
 			{
 				float rotValues[4] =
 				{
+					node["rotation"][3],
 					node["rotation"][0],
 					node["rotation"][1],
-					node["rotation"][2],
-					node["rotation"][3]
+					node["rotation"][2]
 				};
 				rotation = glm::make_quat(rotValues);
 			}
@@ -182,7 +190,7 @@ namespace Velkro
 			std::string type = accessor["type"];
 
 			json bufferView = m_JSON["bufferViews"][buffViewInd];
-			unsigned int byteOffset = bufferView["byteOffset"];
+			unsigned int byteOffset = bufferView.value("byteOffset", 0);
 
 			unsigned int numPerVert;
 			if (type == "SCALAR") numPerVert = 1;
@@ -261,7 +269,7 @@ namespace Velkro
 			for (unsigned int i = 0; i < m_JSON["images"].size(); i++)
 			{
 				std::string texPath = m_JSON["images"][i]["uri"];
-
+				
 				bool skip = false;
 				for (unsigned int j = 0; j < m_LoadedTexName.size(); j++)
 				{
@@ -272,17 +280,31 @@ namespace Velkro
 						break;
 					}
 				}
-
+				
 				if (!skip)
 				{
-					if (texPath.find("baseColor") != std::string::npos)
+					bool isDiffuseTexture = false;
+					for (const auto& material : m_JSON["materials"])
+					{
+						if (material["pbrMetallicRoughness"]["baseColorTexture"].contains("index"))
+						{
+							int index = material["pbrMetallicRoughness"]["baseColorTexture"]["index"];
+							if (index == i)
+							{
+								isDiffuseTexture = true;
+								break;
+							}
+						}
+					}
+					
+					if (isDiffuseTexture)
 					{
 						Texture diffuse = Texture2D::CreateTexture((fileDirectory + texPath).c_str(), mipmapType, VLK_REPEAT, VLK_DIFFUSE);
 						textures.push_back(diffuse);
 						m_LoadedTex.push_back(diffuse);
 						m_LoadedTexName.push_back(texPath);
 					}
-					else if (texPath.find("metallicRoughness") != std::string::npos)
+					else
 					{
 						Texture specular = Texture2D::CreateTexture((fileDirectory + texPath).c_str(), mipmapType, VLK_REPEAT, VLK_SPECULAR);
 						textures.push_back(specular);
@@ -295,8 +317,8 @@ namespace Velkro
 			return textures;
 		}
 
-		std::vector<Vertex> AssembleVertices
-		(
+
+		std::vector<Vertex> AssembleVertices(
 			std::vector<glm::vec3> positions,
 			std::vector<glm::vec3> normals,
 			std::vector<glm::vec2> texUVs
@@ -305,10 +327,8 @@ namespace Velkro
 			std::vector<Vertex> vertices;
 			for (int i = 0; i < positions.size(); i++)
 			{
-				vertices.push_back
-				(
-					Vertex
-					{
+				vertices.push_back(
+					Vertex{
 						positions[i],
 						normals[i],
 						glm::vec3(1.0f, 1.0f, 1.0f),
@@ -318,6 +338,7 @@ namespace Velkro
 			}
 			return vertices;
 		}
+
 
 		std::vector<glm::vec2> GroupFloatsVec2(std::vector<float> floatVec)
 		{

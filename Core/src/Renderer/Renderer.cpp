@@ -4,13 +4,14 @@
 
 namespace Velkro
 {
-	bool Renderer::Init(Window& window)
+	bool Renderer::Init(Window& window, bool multisample, int samples)
 	{
 		window.SetContextCurrent();
 
 		if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			glEnable(GL_DEPTH_TEST);
+			glEnable(GL_MULTISAMPLE);
 
 			return true;
 		}

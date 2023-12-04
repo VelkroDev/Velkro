@@ -87,7 +87,8 @@ project "Runtime"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"Core/vendor/glad/src/**.c",
 	}
 
 	includedirs

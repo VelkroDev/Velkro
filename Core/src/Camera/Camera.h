@@ -14,11 +14,11 @@ namespace Velkro
 	class Camera
 	{
 	public:
-		Camera();
-		~Camera();
+		VELKRO_API		Camera();
+		VELKRO_API		~Camera();
 
-		void UpdateEvents(Event& event, Window& window);
-		void UpdateMatrices(Shader& shader, Window& window);
+		VELKRO_API		void UpdateEvents(Event& event, Window& window);
+		VELKRO_API		void UpdateMatrices(Shader& shader, Window& window);
 
 	private:
 		glm::vec3 m_Position = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -29,7 +29,6 @@ namespace Velkro
 		glm::mat4 m_ViewMatrix = glm::mat4(1.0f);
 
 		bool m_FirstMousePress = true;
-		bool m_FirstEverMousePress = true;
 		
 		float m_Speed = 0.01f;
 

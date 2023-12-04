@@ -4,6 +4,8 @@
 
 #include <cstdint>
 
+#include <glm/glm.hpp>
+
 namespace Velkro
 {
 	struct Vertex
@@ -44,7 +46,9 @@ namespace Velkro
 			uint32_t vboID;
 			glGenBuffers(1, &vboID);
 
-			return VBO(vboID);
+			VBO VBO(vboID);
+
+			return VBO;
 		}
 
 		void SetData(std::vector<Vertex> vertices, VLK_DATA_USAGE dataUsage)
@@ -90,6 +94,12 @@ namespace Velkro
 		{
 			return m_RendererID;
 		}
+
+		void Destroy()
+		{
+			glDeleteBuffers(1, &m_RendererID);
+		}
+
 	private:
 		uint32_t m_RendererID;
 	};

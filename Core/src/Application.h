@@ -17,8 +17,9 @@ namespace Velkro
 {
 	class Application
 	{
-		using AttachCallback = std::function<void()>;
-		using UpdateCallback = std::function<void()>;
+		using AttachCallback = std::function<void(Window& window)>;
+		using UpdateCallback = std::function<void(Window& window)>;
+		using AppEventCallback = std::function<void(Event& event, Window& window)>;
 		using DetachCallback = std::function<void()>;
 
 	public:
@@ -31,7 +32,7 @@ namespace Velkro
 		VELKRO_API		static void SetUpdateCallback(UpdateCallback updateCallback);
 		VELKRO_API		static void SetDetachCallback(DetachCallback detachCallback);
 
-		VELKRO_API		static void SetEventCallback(Event::EventCallback eventCallback);
+		VELKRO_API		static void SetEventCallback(AppEventCallback eventCallback);
 
 		VELKRO_API		void Run();
 
@@ -40,11 +41,7 @@ namespace Velkro
 		VELKRO_API		static inline UpdateCallback m_UpdateCallback;
 		VELKRO_API		static inline DetachCallback m_DetachCallback;
 		
-		VELKRO_API		static inline Event::EventCallback m_EventCallback;
-
-		VELKRO_API		static inline Camera m_Camera;
-
-		VELKRO_API		static inline Shader Shader;
+		VELKRO_API		static inline AppEventCallback m_EventCallback;
 
 		VELKRO_API		static inline bool m_Running = true;
 

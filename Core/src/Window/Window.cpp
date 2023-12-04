@@ -4,9 +4,25 @@
 
 namespace Velkro
 {
-	bool Window::Init()
+	bool Window::Init(bool multisample, int samples)
 	{
-		return glfwInit();
+		if (glfwInit())
+		{
+			if (multisample)
+			{
+				glfwWindowHint(GLFW_SAMPLES, 32);
+			}
+			
+			glfwWindowHint(GLFW_PLATFORM, GLFW_ANY_PLATFORM);
+
+			return true;
+		}
+		else
+		{
+			VLK_CORE_ERROR("Failed to initialize window system.");
+
+			return false;
+		}
 	}
 
 	Window::Window()

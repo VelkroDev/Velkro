@@ -13,7 +13,7 @@ namespace Velkro
 	public:
 		VELKRO_API		friend class Event;
 
-		VELKRO_API		static bool Init();
+		VELKRO_API		static bool Init(bool multisample = true, int samples = 16);
 
 		VELKRO_API		Window();
 		VELKRO_API		~Window();

@@ -9,18 +9,29 @@ Client::Client(Application* application)
 	application->SetEventCallback(OnEvent);
 }
 
-void Client::OnAttach()
+void Client::OnAttach(Window& window)
 {
 	Logger::Init();
-}
-
-void Client::OnUpdate()
-{
 	
+	gladLoadGL();
+
+	m_Shader = Shader::CreateShaderFromFile("assets/Shaders/shader.vertex.glsl", "assets/Shaders/shader.fragment.glsl");
+
+	m_Model = Model::CreateModel("assets/Models/velkroCube/untitled.gltf", VLK_LINEAR);
 }
 
-void Client::OnEvent(Event event)
+void Client::OnUpdate(Window& window)
 {
+	m_Camera.UpdateMatrices(m_Shader, window);
+
+	m_Shader.Bind();
+
+	m_Model.Render(m_Shader);
+}
+
+void Client::OnEvent(Event event, Window& window)
+{
+	m_Camera.UpdateEvents(event, window);
 }
 
 void Client::OnDetach()

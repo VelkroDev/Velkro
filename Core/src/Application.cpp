@@ -7,7 +7,7 @@ namespace Velkro
 {
 	Application::Application()
 	{
-		Window::Init();
+		Window::Init(true, 128);
 
 		m_Window = Window::Create("Velkro Engine", 800, 600);
 
@@ -22,19 +22,13 @@ namespace Velkro
 
 	void Application::OnEvent(Event& event)
 	{
-		m_Camera.UpdateEvents(event, m_Window);
-
-		m_EventCallback(event);
+		m_EventCallback(event, m_Window);
 	}
 
 	void Application::Run()
 	{
-		m_AttachCallback();
+		m_AttachCallback(m_Window);
 				
-		Shader = Shader::CreateShaderFromFile("assets/Shaders/shader.vertex.glsl", "assets/Shaders/shader.fragment.glsl");;
-		
-		Model model = Model::CreateModel("assets/Models/map/scene.gltf", VLK_LINEAR);
-
 		while (m_Running && !m_Window.GetClosed())
 		{
 			Renderer::SetViewport(glm::vec2(0.0f, 0.0f), m_Window.GetScale());
@@ -43,13 +37,7 @@ namespace Velkro
 
 			Event::Update(m_Window);
 
-			m_Camera.UpdateMatrices(Shader, m_Window);
-
-			Shader.Bind();
-
-			model.Render(Shader);
-
-			m_UpdateCallback();
+			m_UpdateCallback(m_Window);
 
 			m_Window.Update();
 		}
@@ -73,7 +61,7 @@ namespace Velkro
 		m_DetachCallback = detachCallback;
 	}
 
-	void Application::SetEventCallback(Event::EventCallback eventCallback)
+	void Application::SetEventCallback(AppEventCallback eventCallback)
 	{
 		m_EventCallback = eventCallback;
 	}

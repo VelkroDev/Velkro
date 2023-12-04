@@ -21,7 +21,7 @@ uniform mat4 u_ScaleMatrix;
 
 void main()
 {
-	currentPos = vec3(u_ModelMatrix * u_TranslationMatrix * -u_RotationMatrix * u_ScaleMatrix * vec4(vertexPos, 1.0f));
+	currentPos = vec3(u_ModelMatrix * u_TranslationMatrix * u_RotationMatrix * u_ScaleMatrix * vec4(vertexPos, 1.0f));
 
 	position = vertexPos;
 	normal = vertexNormal;

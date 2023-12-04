@@ -9,12 +9,12 @@ in vec2 texCoord;
 
 uniform vec3 u_CameraPos;
 
-uniform sampler2D diffuse;
-uniform sampler2D specular;
+uniform sampler2D diffuse0;
+uniform sampler2D specular0;
 
 void main()
 {
 	float distance = distance(u_CameraPos, position);
 	
-	FragColor = texture(diffuse, texCoord);
+	FragColor = texture(specular0, texCoord);
 }
