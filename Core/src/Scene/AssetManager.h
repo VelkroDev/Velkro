@@ -2,7 +2,7 @@
 
 #include "../API.h"
 
-#include "../Renderer/CustomTypes/Model/Model.h"
+#include "../Renderer/Model/Model.h"
 
 namespace Velkro
 {

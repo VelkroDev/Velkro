@@ -22,7 +22,7 @@ void Client::OnAttach(Window& window)
 
 void Client::OnUpdate(Window& window)
 {
-	m_Camera.UpdateMatrices(m_Shader, window);
+	m_Camera.UpdateMatrices(m_Shader, window.GetScale());
 
 	m_Shader.Bind();
 

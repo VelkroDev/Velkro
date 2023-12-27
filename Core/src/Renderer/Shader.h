@@ -2,7 +2,9 @@
 
 #include <glad/glad.h>
 
-#include "../../FileManager/FileInput.h"
+#include <vlkpch.h>
+
+#include "../FileManager/FileInput.h"
 
 namespace Velkro
 {

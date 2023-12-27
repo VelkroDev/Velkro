@@ -7,4 +7,6 @@
 #include <map>
 #include <unordered_map>
 
-#include "../Logging/Log.h"
+#include <glm/glm.hpp>
+
+#include "../Log.h"

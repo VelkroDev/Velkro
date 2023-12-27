@@ -1,7 +1,6 @@
 #include <vlkpch.h>
 
 #include "Application.h"
-#include "Renderer/CustomTypes/Texture/Texture.h"
 
 namespace Velkro
 {

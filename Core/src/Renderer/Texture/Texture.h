@@ -6,9 +6,9 @@
 
 #include <cstdint>
 
-#include "../../ShaderManager/Shader.h"
+#include <vlkpch.h>
 
-#include "../Logging/Log.h"
+#include "../Shader.h"
 
 namespace Velkro
 {

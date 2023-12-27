@@ -9,11 +9,7 @@
 
 #include "../API.h"
 
-#include "GLTypes/VAO.h"
-#include "GLTypes/VBO.h"
-#include "GLTypes/EBO.h"
-
-#include "CustomTypes/Model/Model.h"
+#include "Model/Model.h"
 
 namespace Velkro::Renderer
 {

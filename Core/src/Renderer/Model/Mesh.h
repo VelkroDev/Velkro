@@ -1,12 +1,9 @@
-#include "../../GLTypes/VAO.h"
-#include "../../GLTypes/VBO.h"
-#include "../../GLTypes/EBO.h"
-
-#include "../../CustomTypes/Texture/Texture.h"
-
 #include <vector>
 
 #include <glm/gtc/type_ptr.hpp>
+
+#include "../Buffer.h"
+#include "../Texture/Texture.h"
 
 namespace Velkro
 {
@@ -21,37 +18,37 @@ namespace Velkro
 		{
 		}
 
-		Mesh(VAO& VAO, VBO& VBO, EBO& EBO, std::vector<Vertex>& vertices, std::vector<uint32_t>& indices, std::vector<Texture>& textures)
-			: MeshVAO(VAO), MeshVBO(VBO), MeshEBO(EBO), Vertices(vertices), Indices(indices), Textures(textures)
+		Mesh(VertexArray& vertexArray, VertexBuffer& vertexBuffer, IndexBuffer& indexBuffer, std::vector<Vertex>& vertices, std::vector<uint32_t>& indices, std::vector<Texture>& textures)
+			: MeshVertexArray(vertexArray), MeshVertexBuffer(vertexBuffer), MeshIndexBuffer(indexBuffer), Vertices(vertices), Indices(indices), Textures(textures)
 		{
 		}
 
 		static Mesh CreateMesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices, std::vector<Texture>& textures)
 		{
-			VAO VAO = VAO::CreateVAO(indices);
-			VBO VBO = VBO::CreateVBO();
-			EBO EBO = EBO::CreateEBO();
+			VertexArray vertexArray = VertexArray::CreateVertexArray(indices);
+			VertexBuffer vertexBuffer = VertexBuffer::CreateVertexBuffer();
+			IndexBuffer indexBuffer = IndexBuffer::CreateIndexBuffer();
 
-			VAO.Bind();
+			vertexArray.Bind();
 
-			VBO.Bind();
+			vertexBuffer.Bind();
 
-			VBO.SetData(vertices, VLK_DYNAMIC);
+			vertexBuffer.SetData(vertices, VLK_DYNAMIC);
 
-			EBO.Bind();
+			indexBuffer.Bind();
 
-			EBO.SetData(indices, VLK_DYNAMIC);
+			indexBuffer.SetData(indices, VLK_DYNAMIC);
 
-			VAO.LinkAttrib(VBO, 0, 3, VLK_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, position));
-			VAO.LinkAttrib(VBO, 1, 3, VLK_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, normal));
-			VAO.LinkAttrib(VBO, 2, 3, VLK_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, colour));
-			VAO.LinkAttrib(VBO, 3, 2, VLK_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, textureCoord));
+			vertexArray.LinkAttrib(vertexBuffer, 0, 3, VLK_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, position));
+			vertexArray.LinkAttrib(vertexBuffer, 1, 3, VLK_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+			vertexArray.LinkAttrib(vertexBuffer, 2, 3, VLK_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, colour));
+			vertexArray.LinkAttrib(vertexBuffer, 3, 2, VLK_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, textureCoord));
 
-			VBO.UnBind();
-			VAO.UnBind();
-			EBO.UnBind();
+			vertexBuffer.UnBind();
+			vertexArray.UnBind();
+			indexBuffer.UnBind();
 
-			return Mesh(VAO, VBO, EBO, vertices, indices, textures);
+			return Mesh(vertexArray, vertexBuffer, indexBuffer, vertices, indices, textures);
 		}
 
 		void Render(Shader& shader, glm::mat4 matrix, glm::vec3 translation = glm::vec3(0.0f), 	glm::vec3 scale = glm::vec3(1.0f), glm::quat rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f))
@@ -94,12 +91,12 @@ namespace Velkro
 
 			glUniformMatrix4fv(glGetUniformLocation(shader.GetRendererID(), "u_ModelMatrix"), 1, GL_FALSE, glm::value_ptr(matrix));
 
-			MeshVAO.Render();
+			MeshVertexArray.Render();
 		}
 
-		VAO MeshVAO;
-		VBO MeshVBO;
-		EBO MeshEBO;
+		VertexArray MeshVertexArray;
+		VertexBuffer MeshVertexBuffer;
+		IndexBuffer MeshIndexBuffer;
 
 		std::vector<Vertex> Vertices;
 		std::vector<uint32_t> Indices;

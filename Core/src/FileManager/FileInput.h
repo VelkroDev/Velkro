@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 
-#include "../Logging/Log.h"
+#include <vlkpch.h>
 
 namespace Velkro 
 {

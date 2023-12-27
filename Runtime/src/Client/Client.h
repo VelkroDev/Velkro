@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Application.h"
-#include "Logging/Log.h"
 
 using namespace Velkro;
 

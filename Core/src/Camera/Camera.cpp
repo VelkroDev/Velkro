@@ -78,9 +78,9 @@ namespace Velkro
 		}
 	}
 
-	void Camera::UpdateMatrices(Shader& shader, Window& window)
+	void Camera::UpdateMatrices(Shader& shader, glm::vec2 viewportScale)
 	{
-		m_ProjectionMatrix = glm::perspective(glm::radians(m_FOV), float(window.GetWidth() / window.GetHeight()), 0.001f, 100.0f);
+		m_ProjectionMatrix = glm::perspective(glm::radians(m_FOV), float(viewportScale.x / viewportScale.y), 0.001f, 100.0f);
 		m_ViewMatrix = glm::lookAt(m_Position, m_Position - m_Front, glm::vec3(0.0f, 1.0f, 0.0f));
 
 		glm::mat4 camMatrix = m_ProjectionMatrix * m_ViewMatrix;

@@ -1,17 +1,15 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
-
-#include <map>
-
 #include "../Window/Window.h"
 
-#include "../Logging/Log.h"
+#include <vlkpch.h>
 
 typedef int VLK_KEY_CODE;
 typedef int VLK_MOUSE_BUTTON_CODE;
 
 typedef int VLK_EVENT;
+
+/* Inherited from GLFW */
 
 #define VLK_UNKNOWN_ACTION        -1
 

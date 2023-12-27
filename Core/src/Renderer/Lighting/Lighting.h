@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../ShaderManager/Shader.h"
+#include "../Shader.h"
 
 namespace Velkro
 {

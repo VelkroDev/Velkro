@@ -7,7 +7,7 @@
 #include "../Events/Events.h"
 #include "../Window/Window.h"
 
-#include "../Renderer/ShaderManager/Shader.h"
+#include "../Renderer/Shader.h"
 
 namespace Velkro
 {
@@ -18,7 +18,7 @@ namespace Velkro
 		VELKRO_API		~Camera();
 
 		VELKRO_API		void UpdateEvents(Event& event, Window& window);
-		VELKRO_API		void UpdateMatrices(Shader& shader, Window& window);
+		VELKRO_API		void UpdateMatrices(Shader& shader, glm::vec2 viewportScale);
 
 	private:
 		glm::vec3 m_Position = glm::vec3(0.0f, 0.0f, -1.0f);
