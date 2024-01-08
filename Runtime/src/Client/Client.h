@@ -18,5 +18,6 @@ private:
 	static inline Camera m_Camera;
 
 	static inline Shader m_Shader;
-	static inline Model m_Model;
+
+	static inline Model model;
 };

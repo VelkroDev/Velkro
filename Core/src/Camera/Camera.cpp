@@ -85,7 +85,7 @@ namespace Velkro
 
 		glm::mat4 camMatrix = m_ProjectionMatrix * m_ViewMatrix;
 
-		glUniform3f(glGetUniformLocation(shader.GetRendererID(), "u_CameraPos"), m_Position.x, m_Position.y, m_Position.z);
-		glUniformMatrix4fv(glGetUniformLocation(shader.GetRendererID(), "u_CameraMatrix"), 1, false, glm::value_ptr(camMatrix));
+		shader.SetUniformVec3("u_CameraPos", m_Position);
+		shader.SetUniformMat4("u_CameraMatrix", camMatrix);
 	}
 }

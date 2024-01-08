@@ -43,6 +43,7 @@ namespace Velkro
 			vertexArray.LinkAttrib(vertexBuffer, 1, 3, VLK_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 			vertexArray.LinkAttrib(vertexBuffer, 2, 3, VLK_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, colour));
 			vertexArray.LinkAttrib(vertexBuffer, 3, 2, VLK_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, textureCoord));
+			vertexArray.LinkAttrib(vertexBuffer, 4, 1, VLK_INT  , sizeof(Vertex), (void*)offsetof(Vertex, textureID));
 
 			vertexBuffer.UnBind();
 			vertexArray.UnBind();
@@ -51,43 +52,23 @@ namespace Velkro
 			return Mesh(vertexArray, vertexBuffer, indexBuffer, vertices, indices, textures);
 		}
 
-		void Render(Shader& shader, glm::mat4 matrix, glm::vec3 translation = glm::vec3(0.0f), 	glm::vec3 scale = glm::vec3(1.0f), glm::quat rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f))
+		void Render(Shader& shader, glm::mat4 matrix)
 		{
-			uint32_t diffuseCount = 0;
-			uint32_t specularCount = 0;
-
 			for (int i = 0; i < Textures.size(); i++)
 			{
-				std::string count;
 				std::string type;
-
+				
 				if (Textures[i].GetTextureType() == VLK_DIFFUSE)
 				{
 					type = "diffuse";
-
-					count = std::to_string(diffuseCount++);
 				}
 				else if (Textures[i].GetTextureType() == VLK_SPECULAR)
 				{
 					type = "specular";
-
-					count = std::to_string(specularCount++);
 				}
 
-				Textures[i].SetTextureUnit(shader, (type + count).c_str(), i);
+				Textures[i].SetTextureUnit(shader, type.c_str(), i);
 			}
-
-			glm::mat4 translationMat = glm::mat4(1.0f);
-			glm::mat4 scaleMat = glm::mat4(1.0f);
-			glm::mat4 rotationMat = glm::mat4(1.0f);
-
-			translationMat = glm::translate(translationMat, translation);
-			scaleMat = glm::scale(scaleMat, scale);
-			rotationMat = glm::mat4_cast(rotation);
-
-			glUniformMatrix4fv(glGetUniformLocation(shader.GetRendererID(), "u_TranslationMatrix"), 1, GL_FALSE, glm::value_ptr(translationMat));			
-			glUniformMatrix4fv(glGetUniformLocation(shader.GetRendererID(), "u_ScaleMatrix"), 1, GL_FALSE, glm::value_ptr(scaleMat));
-			glUniformMatrix4fv(glGetUniformLocation(shader.GetRendererID(), "u_RotationMatrix"), 1, GL_FALSE, glm::value_ptr(rotationMat));
 
 			glUniformMatrix4fv(glGetUniformLocation(shader.GetRendererID(), "u_ModelMatrix"), 1, GL_FALSE, glm::value_ptr(matrix));
 

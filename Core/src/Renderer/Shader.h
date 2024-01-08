@@ -118,6 +118,37 @@ namespace Velkro
 			return Shader(shaderProgram);
 		}
 
+		/* Uniforms */
+
+		void SetUniformFloat(const char* floatID, float value)
+		{
+			glUniform1f(glGetUniformLocation(m_RendererID, floatID), value);
+		}
+		void SetUniformInt(const char* intID, int value)
+		{
+			glUniform1i(glGetUniformLocation(m_RendererID, intID), value);
+		}
+
+		void SetUniformMat4(const char* matrixID, glm::mat4& matrix)
+		{
+			glUniformMatrix4fv(glGetUniformLocation(m_RendererID, matrixID), 1, GL_FALSE, glm::value_ptr(matrix));
+		}
+
+		void SetUniformVec2(const char* vectorID, glm::vec2& vector)
+		{
+			glUniform2f(glGetUniformLocation(m_RendererID, vectorID), vector.x, vector.y);
+		}
+		void SetUniformVec3(const char* vectorID, glm::vec3& vector)
+		{
+			glUniform3f(glGetUniformLocation(m_RendererID, vectorID), vector.x, vector.y, vector.z);
+		}
+		void SetUniformVec4(const char* vectorID, glm::vec4& vector)
+		{
+			glUniform4f(glGetUniformLocation(m_RendererID, vectorID), vector.x, vector.y, vector.z, vector.w);
+		}
+
+		/************/
+
 		void Bind()
 		{
 			glUseProgram(m_RendererID);

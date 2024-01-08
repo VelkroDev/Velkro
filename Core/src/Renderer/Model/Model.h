@@ -27,15 +27,18 @@ namespace Velkro
 			m_FilePath = filePath;
 
 			m_Data = GetData();
-			
-			TraverseNode(0, mipmapType);
+						
+			for (int i = 0; i < m_JSON["meshes"].size(); i++)
+			{
+				TraverseNode(i, mipmapType);
+			}			
 		}
 
 		~Model()
 		{
 		}
 
-		static Model CreateModel(const char* filePath, TextureMipMap mipmapType)
+		static Model CreateModel(const char* filePath, TextureMipMap mipmapType = VLK_LINEAR)
 		{
 			FileInput file = FileInput::CreateFileInput(filePath);
 			json json = json::parse(file.GetInput());
@@ -48,7 +51,11 @@ namespace Velkro
 			// Go over all meshes and render each one
 			for (unsigned int i = 0; i < m_Meshes.size(); i++)
 			{
-				m_Meshes[i].Mesh::Render(shader, m_MatricesMeshes[i], Position, Scale, Rotation);
+				glm::mat4 translationMat = glm::translate(glm::mat4(1.0f), Position);
+				glm::mat4 rotationMat    = glm::mat4_cast(glm::quat(Rotation));
+				glm::mat4 scaleMat       = glm::scale(glm::mat4(1.0f), Scale);
+
+				m_Meshes[i].Mesh::Render(shader, translationMat * rotationMat * scaleMat * m_MatricesMeshes[i]);
 			}
 		}
 
@@ -62,21 +69,22 @@ namespace Velkro
 			Scale = scale;
 		}
 
-		void SetRotation(glm::quat rotation)
+		void SetRotation(glm::vec3 rotation)
 		{
 			Rotation = rotation;
 		}
 
 		glm::vec3 Position = glm::vec3(0.0f, 0.0f, 0.0f);
+		glm::vec3 Rotation = glm::vec3(0.0f, 0.0f, 0.0f);
 		glm::vec3 Scale = glm::vec3(1.0f, 1.0f, 1.0f);
-		glm::quat Rotation = glm::quat(0.0f, 0.0f, 0.0f, 1.0f);
-
+		
 	private:
 		void LoadMesh(unsigned int indMesh, TextureMipMap mipmapType)
 		{
 			unsigned int posAccInd = m_JSON["meshes"][indMesh]["primitives"][0]["attributes"]["POSITION"];
 			unsigned int normalAccInd = m_JSON["meshes"][indMesh]["primitives"][0]["attributes"]["NORMAL"];
 			unsigned int texAccInd = m_JSON["meshes"][indMesh]["primitives"][0]["attributes"]["TEXCOORD_0"];
+			unsigned int colAccInd = m_JSON["meshes"][indMesh]["primitives"][0]["material"];
 			unsigned int indAccInd = m_JSON["meshes"][indMesh]["primitives"][0]["indices"];
 
 			std::vector<float> posVec = GetFloats(m_JSON["accessors"][posAccInd]);
@@ -85,10 +93,10 @@ namespace Velkro
 			std::vector<glm::vec3> normals = GroupFloatsVec3(normalVec);
 			std::vector<float> texVec = GetFloats(m_JSON["accessors"][texAccInd]);
 			std::vector<glm::vec2> texUVs = GroupFloatsVec2(texVec);
-									
+
 			std::vector<Vertex> vertices = AssembleVertices(positions, normals, texUVs);
 			std::vector<GLuint> indices = GetIndices(m_JSON["accessors"][indAccInd]);
-			std::vector<Texture> textures = GetTextures(mipmapType);			
+			std::vector<Texture> textures = GetTextures(mipmapType);
 
 			m_Meshes.push_back(Mesh::CreateMesh(vertices, indices, textures));
 		}
@@ -169,6 +177,7 @@ namespace Velkro
 			std::string bytesText;
 			std::string uri = m_JSON["buffers"][0]["uri"];
 			
+			// The data is in a separate .bin file
 			std::string fileStr = std::string(m_FilePath);
 			std::string fileDirectory = fileStr.substr(0, fileStr.find_last_of('/') + 1);
 
@@ -183,7 +192,7 @@ namespace Velkro
 		std::vector<float> GetFloats(json accessor)
 		{
 			std::vector<float> floatVec;
-			
+
 			unsigned int buffViewInd = accessor.value("bufferView", 1);
 			unsigned int count = accessor["count"];
 			unsigned int accByteOffset = accessor.value("byteOffset", 0);
@@ -269,7 +278,7 @@ namespace Velkro
 			for (unsigned int i = 0; i < m_JSON["images"].size(); i++)
 			{
 				std::string texPath = m_JSON["images"][i]["uri"];
-				
+
 				bool skip = false;
 				for (unsigned int j = 0; j < m_LoadedTexName.size(); j++)
 				{
@@ -280,7 +289,7 @@ namespace Velkro
 						break;
 					}
 				}
-				
+
 				if (!skip)
 				{
 					bool isDiffuseTexture = false;
@@ -296,7 +305,7 @@ namespace Velkro
 							}
 						}
 					}
-					
+
 					if (isDiffuseTexture)
 					{
 						Texture diffuse = Texture2D::CreateTexture((fileDirectory + texPath).c_str(), mipmapType, VLK_REPEAT, VLK_DIFFUSE);
@@ -317,25 +326,14 @@ namespace Velkro
 			return textures;
 		}
 
-
-		std::vector<Vertex> AssembleVertices(
-			std::vector<glm::vec3> positions,
-			std::vector<glm::vec3> normals,
-			std::vector<glm::vec2> texUVs
-		)
+		std::vector<Vertex> AssembleVertices(std::vector<glm::vec3> positions, std::vector<glm::vec3> normals, std::vector<glm::vec2> texUVs)
 		{
 			std::vector<Vertex> vertices;
 			for (int i = 0; i < positions.size(); i++)
 			{
-				vertices.push_back(
-					Vertex{
-						positions[i],
-						normals[i],
-						glm::vec3(1.0f, 1.0f, 1.0f),
-						texUVs[i]
-					}
-				);
+				vertices.push_back(Vertex(positions[i], normals[i], glm::vec3(0.0f, 0.0f, 0.0f), texUVs[i]));
 			}
+
 			return vertices;
 		}
 
@@ -371,7 +369,7 @@ namespace Velkro
 		const char* m_FilePath;
 		std::vector<unsigned char> m_Data;
 		json m_JSON;
-		
+
 		std::vector<Mesh> m_Meshes;
 		std::vector<glm::vec3> m_TranslationsMeshes;
 		std::vector<glm::quat> m_RotationsMeshes;

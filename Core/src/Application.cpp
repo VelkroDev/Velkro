@@ -44,7 +44,7 @@ namespace Velkro
 		m_Running = false;
 
 		m_DetachCallback();
-	}	
+	}
 	
 	/* CALLBACKS */
 	void Application::SetAttachCallback(AttachCallback attachCallback)

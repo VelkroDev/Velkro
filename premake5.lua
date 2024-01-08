@@ -18,8 +18,8 @@ project "Core"
 	kind "SharedLib"
 	language "C++"
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-obj/" .. outputdir .. "/%{prj.name}")
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}/")
+	objdir ("bin-obj/" .. outputdir .. "/%{prj.name}/")
 
 	pchsource "%{prj.name}/src/PCH/vlkpch.cpp"
 	pchheader "vlkpch.h"
@@ -38,6 +38,7 @@ project "Core"
 		"%{prj.name}/vendor/glad/include/",
 		"%{prj.name}/vendor/stb/include/",
 		"%{prj.name}/vendor/json/include/",
+		"%{prj.name}/vendor/tinygltf/",
 		"%{prj.name}/src/PCH/"
 	}
 
@@ -61,7 +62,7 @@ project "Core"
 
 		postbuildcommands
 		{
-			("{COPYFILE} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Runtime")
+			("{COPYFILE} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Runtime/")
 		}
 
 	filter "configurations:Debug"
@@ -81,14 +82,13 @@ project "Runtime"
 	kind "ConsoleApp"
 	language "C++"
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-obj/" .. outputdir .. "/%{prj.name}")
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}/")
+	objdir ("bin-obj/" .. outputdir .. "/%{prj.name}/")
 
 	files
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
-		"Core/vendor/glad/src/**.c",
 	}
 
 	includedirs
@@ -100,12 +100,14 @@ project "Runtime"
 		"Core/vendor/glfw/include/",
 		"Core/vendor/glad/include/",
 		"Core/vendor/stb/include/",
-		"Core/vendor/json/include/"
+		"Core/vendor/json/include/",
+		"Core/vendor/tinygltf/",
 	}
 
 	links
 	{
-		"Core"
+		"Core",
+		"GLAD"
 	}
 
 	filter "system:windows"

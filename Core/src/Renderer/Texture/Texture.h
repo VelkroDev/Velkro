@@ -24,36 +24,36 @@ namespace Velkro
 
     enum TextureType
     {
-        VLK_DIFFUSE, VLK_SPECULAR, VLK_NORMAL
+        VLK_DIFFUSE, VLK_SPECULAR
     };
 
 	class Texture
 	{
 	public:
-		VELKRO_API      Texture()
+		VELKRO_API Texture()
 		{
 		}
 
-		VELKRO_API      Texture(uint32_t rendererID, GLenum textureDimension, TextureType textureType)
+		VELKRO_API Texture(uint32_t rendererID, GLenum textureDimension, TextureType textureType)
 			: m_RendererID(rendererID), m_TextureDimension(textureDimension), m_TextureType(textureType)
 		{
 		}
 
-		VELKRO_API      ~Texture()
+		VELKRO_API ~Texture()
 		{
 		}
 
-        VELKRO_API      void Bind()
+        VELKRO_API void Bind()
         {
             glBindTexture(m_TextureDimension, m_RendererID);
         }
 
-        VELKRO_API      void UnBind()
+        VELKRO_API void UnBind()
         {
             glBindTexture(m_TextureDimension, 0);
         }
 
-        VELKRO_API      void SetTextureUnit(Shader& shader, const char* uniformName, uint32_t unit)
+        VELKRO_API void SetTextureUnit(Shader& shader, const char* uniformName, uint32_t unit)
         {
             glActiveTexture(GL_TEXTURE0 + unit);
             glBindTexture(GL_TEXTURE_2D, m_RendererID);
@@ -61,7 +61,7 @@ namespace Velkro
             glUniform1i(glGetUniformLocation(shader.GetRendererID(), uniformName), unit);
         }
 
-        VELKRO_API      TextureType GetTextureType()
+        VELKRO_API TextureType GetTextureType()
         {
             return m_TextureType;
         }
@@ -76,7 +76,7 @@ namespace Velkro
 	class Texture2D : public Texture
 	{
 	public:
-	    VELKRO_API      static Texture CreateTexture(const char* texturePath, TextureMipMap mipmap, TextureWrap wrap, TextureType textureType)
+	    VELKRO_API static Texture CreateTexture(const char* texturePath, TextureMipMap mipmap, TextureWrap wrap, TextureType textureType)
 		{
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

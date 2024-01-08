@@ -13,9 +13,10 @@ namespace Velkro
 		glm::vec3 normal;
 		glm::vec3 colour;
 		glm::vec2 textureCoord;
+		uint32_t textureID = 0;
 
-		Vertex(glm::vec3 position, glm::vec3 normal, glm::vec3 colour, glm::vec2 textureCoord)
-			: position(position), normal(normal), colour(colour), textureCoord(textureCoord)
+		Vertex(glm::vec3 position, glm::vec3 normal, glm::vec3 colour, glm::vec2 textureCoord, uint32_t textureID = -1)
+			: position(position), normal(normal), colour(colour), textureCoord(textureCoord), textureID(textureID)
 		{
 		}
 	};

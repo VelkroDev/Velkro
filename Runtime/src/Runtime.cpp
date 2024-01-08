@@ -6,11 +6,10 @@ int main()
 {
 	Velkro::Application* app = new Application();
 
-	Client* client = new Client(app);
+	Client client(app);
 
 	app->Run();
 
-	delete client;
 	delete app;
 
 	return 0;

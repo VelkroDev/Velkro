@@ -36,8 +36,6 @@ namespace Velkro
         {
             std::string input;
 
-
-
             if (m_InputStream.is_open())
             {
                 m_InputStream.seekg(0, std::ios::end);
@@ -50,6 +48,11 @@ namespace Velkro
             }
 
             return input;
+        }
+        
+        std::string GetFilePath()
+        {
+            return m_FilePath;
         }
 
     private:

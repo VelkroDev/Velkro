@@ -20,6 +20,9 @@ namespace Velkro
 		VELKRO_API		void UpdateEvents(Event& event, Window& window);
 		VELKRO_API		void UpdateMatrices(Shader& shader, glm::vec2 viewportScale);
 
+		VELKRO_API		glm::mat4& GetProjectionMatrix() { return m_ProjectionMatrix; }
+		VELKRO_API		glm::mat4& GetViewMatrix() { return m_ViewMatrix; }
+
 	private:
 		glm::vec3 m_Position = glm::vec3(0.0f, 0.0f, -1.0f);
 		glm::vec3 m_Front = glm::vec3(0.0f, 0.0f, -1.0f);
